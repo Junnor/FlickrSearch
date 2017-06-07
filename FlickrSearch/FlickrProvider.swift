@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class FlickrProvider {
     
@@ -47,7 +48,7 @@ class FlickrProvider {
 
                 guard let photosArray = photosContainer["photo"] as? [NSDictionary] else { return }
 
-                print("..photosArray = \(photosArray)")
+//                print("..photosArray = \(photosArray)")
                 let flickrPhotos: [FlickrPhoto] = photosArray.map { photoDictionary in
 
                     let photoId = photoDictionary["id"] as? String ?? ""
@@ -56,7 +57,13 @@ class FlickrProvider {
                     let server = photoDictionary["server"] as? String ?? ""
                     let title = photoDictionary["title"] as? String ?? ""
                     
-                    let flickrPhoto = FlickrPhoto(photoId: photoId, farm: farm, secret: secret, server: server, title: title)
+                    
+                    let thumbnailUrl = URL(string: "https://farm\(farm).staticflickr.com/\(server)/\(photoId)_\(secret)_m.jpg")!
+                    let imgData = try? Data(contentsOf: thumbnailUrl)
+                    let img = UIImage(data: imgData!)!
+
+                    let flickrPhoto = FlickrPhoto(photoId: photoId, farm: farm, secret: secret, server: server, title: title, thumbnail: img)
+                    
                     return flickrPhoto
                 }
                 

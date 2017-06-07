@@ -12,6 +12,8 @@ import UIKit
 
 class ViewController: UIViewController, UISearchBarDelegate {
     
+    private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    
     @IBOutlet weak var collectionView: UICollectionView!
 
     @IBOutlet var searchBar: UISearchBar! {
@@ -22,12 +24,28 @@ class ViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var shareButton: UIBarButtonItem!
     
     fileprivate var searchResults = [String: [FlickrPhoto]]()
-    fileprivate var searchs = [String]()
+    fileprivate var searchTags = [String]()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        indicator.center = view.center
+        indicator.hidesWhenStopped = true
+        indicator.stopAnimating()
+        view.addSubview(indicator)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Show Flickr Photo" {
+            let indexPath = collectionView.indexPathsForSelectedItems![0]
+            let tag = searchTags[indexPath.section]
+            let dsvc = segue.destination as! FlickrPhotoViewController
+            dsvc.flickrPhoto = searchResults[tag]![indexPath.row]
+        }
+    }
+    
+    @IBAction func unwindToViewController(segue: UIStoryboardSegue) {
     }
 
     @IBAction func share(_ sender: Any) {
@@ -39,11 +57,13 @@ class ViewController: UIViewController, UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.text != nil {
 
+            indicator.startAnimating()
             FlickrProvider.fetchPhotosForSearchText(searchText: searchBar.text!, onCompletion: { [weak self] (error, photos) in
+                self?.indicator.stopAnimating()
                 if photos != nil && photos?.count != 0 {
-                    if !(self?.searchs.contains(searchBar.text!))! {
+                    if !(self?.searchTags.contains(searchBar.text!))! {
                         print("Found \(photos!.count) photos match \(searchBar.text!)")
-                        self?.searchs.append(searchBar.text!)
+                        self?.searchTags.append(searchBar.text!)
                         self?.searchResults[searchBar.text!] = photos!
                     }
                     
@@ -67,7 +87,7 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let key = searchs[section]
+        let key = searchTags[section]
         return searchResults[key]!.count
     }
     
@@ -75,7 +95,7 @@ extension ViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FlickrCell", for: indexPath)
         if let cell = cell as? FlickrCell {
         
-            let searchStr = searchs[indexPath.section]
+            let searchStr = searchTags[indexPath.section]
             let flickrPhoto = searchResults[searchStr]![indexPath.row]
             cell.flickrPhoto = flickrPhoto
         }
@@ -87,7 +107,7 @@ extension ViewController: UICollectionViewDataSource {
             // TODO: xxx
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FlickrHeader", for: indexPath)
             if let header = header as? FlickrPhotoHeaderView {
-                let searchStr = searchs[indexPath.section]
+                let searchStr = searchTags[indexPath.section]
                 header.searchLabel.text = searchStr
             }
             
@@ -100,7 +120,7 @@ extension ViewController: UICollectionViewDataSource {
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO: xxx
+        performSegue(withIdentifier: "Show Flickr Photo", sender: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -112,7 +132,12 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 200, height: 200)
+        if searchResults.count != 0 {
+            let tag = searchTags[indexPath.section]
+            let photo = searchResults[tag]![indexPath.row]
+            return photo.thumbnail.size
+        }
+        return CGSize(width: 100, height: 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -120,3 +145,16 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+
+// MARK: - ViewHeadabel protocol
+
+extension ViewController: ViewHeadabel {
+    
+    var animatedViewFrame: CGRect {
+        let attribute = collectionView.layoutAttributesForItem(at: collectionView.indexPathsForSelectedItems![0])
+        let cellRect = attribute?.frame
+        let animatedFrame = collectionView?.convert((cellRect)!, to: collectionView.superview)
+        
+        return animatedFrame!
+    }
+}
