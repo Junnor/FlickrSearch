@@ -94,6 +94,12 @@ class HeadDismissAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         let duration = transitionDuration(using: transitionContext)
         var finalFrame = transitionContext.finalFrame(for: fromViewController!)
         
+        // --------------------------------------------------------
+        // for sheet type of segue
+        let gap = (UIWindow().bounds.width - finalFrame.width) / 2
+        finalFrame.origin.x = gap
+        // --------------------------------------------------------
+        
         if let _ = fromViewController as? ViewSwipeable {
             finalFrame.origin.y = UIWindow().bounds.height
         }

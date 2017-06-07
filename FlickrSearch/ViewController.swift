@@ -20,6 +20,7 @@ class ViewController: UIViewController, UISearchBarDelegate {
     fileprivate var sharing = false
 
     fileprivate var selectedPhotos = [IndexPath: FlickrPhoto]()
+    fileprivate var historyIndexPath: IndexPath!
     
     @IBOutlet var searchBar: UISearchBar! {
         didSet {
@@ -198,6 +199,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
             selectedPhotos[indexPath] = flickrPhoto(at: indexPath)
         } else {
             performSegue(withIdentifier: "Show Flickr Photo", sender: self)
+            historyIndexPath = indexPath  // for custom segue ...if needed
             collectionView.deselectItem(at: indexPath, animated: true)
         }
     }
@@ -229,8 +231,13 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
 extension ViewController: ViewHeadabel {
     
     var animatedViewFrame: CGRect {
-        let attribute = collectionView.layoutAttributesForItem(at: collectionView.indexPathsForSelectedItems![0])
-        let cellRect = attribute?.frame
+
+//        let attribute = collectionView.layoutAttributesForItem(at: collectionView.indexPathsForSelectedItems![0])
+//        let cellRect = attribute?.frame
+        
+        let cell = collectionView.cellForItem(at: historyIndexPath!)
+        let cellRect = cell?.frame
+
         let animatedFrame = collectionView?.convert((cellRect)!, to: collectionView.superview)
         
         return animatedFrame!
