@@ -9,13 +9,18 @@
 // b2f908edd7b9350c788d8ff7e8bbc263
 
 import UIKit
+import MessageUI
 
 class ViewController: UIViewController, UISearchBarDelegate {
     
     private let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    fileprivate var sharing = false
 
+    fileprivate var selectedPhotos = [IndexPath: FlickrPhoto]()
+    
     @IBOutlet var searchBar: UISearchBar! {
         didSet {
             searchBar.delegate = self
@@ -39,9 +44,8 @@ class ViewController: UIViewController, UISearchBarDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Show Flickr Photo" {
             let indexPath = collectionView.indexPathsForSelectedItems![0]
-            let tag = searchTags[indexPath.section]
             let dsvc = segue.destination as! FlickrPhotoViewController
-            dsvc.flickrPhoto = searchResults[tag]![indexPath.row]
+            dsvc.flickrPhoto = flickrPhoto(at: indexPath)
         }
     }
     
@@ -49,6 +53,44 @@ class ViewController: UIViewController, UISearchBarDelegate {
     }
 
     @IBAction func share(_ sender: Any) {
+        if sharing {
+            sharing = false
+            shareButton.title = "Share"
+            collectionView.allowsMultipleSelection = false
+            
+            if selectedPhotos.keys.count > 0 {
+                showMailComposerAndSend()
+            }
+            
+            for indexPath in selectedPhotos.keys {
+                collectionView.deselectItem(at: indexPath, animated: true)
+            }
+            selectedPhotos.removeAll()
+
+        } else {
+            sharing = true
+            shareButton.title = "Done"
+            collectionView.allowsMultipleSelection = true
+        }
+    }
+    
+    private func showMailComposerAndSend() {
+        if MFMessageComposeViewController.canSendAttachments() {
+            let mailer = MFMessageComposeViewController()
+            mailer.messageComposeDelegate = self
+            mailer.subject = "Check out these flickr photos"
+            var emailBody = ""
+            for (_, photo) in selectedPhotos {
+                emailBody.append("Flick Share With Photo")
+                mailer.addAttachmentURL(photo.photoUrl, withAlternateFilename: nil)
+            }
+            mailer.body = emailBody
+            present(mailer, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Mail Failure", message: "Your device can not send email", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     
@@ -78,6 +120,30 @@ class ViewController: UIViewController, UISearchBarDelegate {
         
         searchBar.resignFirstResponder()
     }
+    
+    fileprivate func flickrPhoto(at indexPath: IndexPath) -> FlickrPhoto {
+        let tag = searchTags[indexPath.section]
+        return searchResults[tag]![indexPath.row]
+    }
+    
+    fileprivate func item(of flickrPhoto: FlickrPhoto) -> Int {
+        return 0
+    }
+}
+
+extension ViewController: MFMessageComposeViewControllerDelegate {
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        switch result {
+        case .sent:
+            print("send")
+        case .cancelled:
+            print("canced")
+        case .failed:
+            print("fai;ed")
+        }
+        controller.dismiss(animated: true, completion: nil)
+    }
 }
 
 extension ViewController: UICollectionViewDataSource {
@@ -94,10 +160,8 @@ extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FlickrCell", for: indexPath)
         if let cell = cell as? FlickrCell {
-        
-            let searchStr = searchTags[indexPath.section]
-            let flickrPhoto = searchResults[searchStr]![indexPath.row]
-            cell.flickrPhoto = flickrPhoto
+            let photo = flickrPhoto(at: indexPath)
+            cell.flickrPhoto = photo
         }
         return cell
     }
@@ -117,14 +181,29 @@ extension ViewController: UICollectionViewDataSource {
     }
 }
 
+extension Array where Element: AnyObject {
+    mutating func removeObject(object: Element) {
+        if let index = index(where: { $0 === object }) {
+            remove(at: index)
+        }
+    }
+}
+
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "Show Flickr Photo", sender: self)
+        
+        if sharing {
+            selectedPhotos[indexPath] = flickrPhoto(at: indexPath)
+        } else {
+            performSegue(withIdentifier: "Show Flickr Photo", sender: self)
+            collectionView.deselectItem(at: indexPath, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        // TODO: xxx
+        selectedPhotos.removeValue(forKey: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -133,8 +212,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if searchResults.count != 0 {
-            let tag = searchTags[indexPath.section]
-            let photo = searchResults[tag]![indexPath.row]
+            let photo = flickrPhoto(at: indexPath)
             return photo.thumbnail.size
         }
         return CGSize(width: 100, height: 100)

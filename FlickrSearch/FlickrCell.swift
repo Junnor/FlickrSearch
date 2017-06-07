@@ -10,6 +10,14 @@ import UIKit
 
 class FlickrCell: UICollectionViewCell {
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let bgView = UIView(frame: self.frame)
+        bgView.backgroundColor = UIColor.red
+        self.selectedBackgroundView = bgView
+    }
+    
     @IBOutlet weak var imageView: UIImageView!
     
     var flickrPhoto: FlickrPhoto! {

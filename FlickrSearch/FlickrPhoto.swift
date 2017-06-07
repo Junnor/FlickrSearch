@@ -19,6 +19,7 @@ struct FlickrPhoto {
     
     let thumbnail: UIImage!
     
+    // thumbnail
     var photoUrl: URL {
         return URL(string: "https://farm\(farm).staticflickr.com/\(server)/\(photoId)_\(secret)_m.jpg")!
     }

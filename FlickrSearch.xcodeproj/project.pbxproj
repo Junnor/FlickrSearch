@@ -18,6 +18,7 @@
 		8BAF26D21EE6FF84005E8657 /* FlickrPhotoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAF26D11EE6FF84005E8657 /* FlickrPhotoHeaderView.swift */; };
 		8BB6CA3B1EE831E2009D1D1D /* FlickrPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB6CA3A1EE831E2009D1D1D /* FlickrPhotoViewController.swift */; };
 		8BB6CA3D1EE83340009D1D1D /* SwipeSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB6CA3C1EE83340009D1D1D /* SwipeSegue.swift */; };
+		8BB6CA401EE84671009D1D1D /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BB6CA3F1EE84671009D1D1D /* MessageUI.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		8BAF26D11EE6FF84005E8657 /* FlickrPhotoHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhotoHeaderView.swift; sourceTree = "<group>"; };
 		8BB6CA3A1EE831E2009D1D1D /* FlickrPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhotoViewController.swift; sourceTree = "<group>"; };
 		8BB6CA3C1EE83340009D1D1D /* SwipeSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeSegue.swift; sourceTree = "<group>"; };
+		8BB6CA3F1EE84671009D1D1D /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BB6CA401EE84671009D1D1D /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +55,7 @@
 			children = (
 				8BA4033A1EE6DB09004E749C /* FlickrSearch */,
 				8BA403391EE6DB08004E749C /* Products */,
+				8BB6CA3E1EE84671009D1D1D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +84,14 @@
 				8BA403471EE6DB09004E749C /* Info.plist */,
 			);
 			path = FlickrSearch;
+			sourceTree = "<group>";
+		};
+		8BB6CA3E1EE84671009D1D1D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8BB6CA3F1EE84671009D1D1D /* MessageUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

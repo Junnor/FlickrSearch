@@ -40,16 +40,16 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cad-bL-K8S">
-                                                    <rect key="frame" x="0.0" y="0.0" width="234" height="158"/>
+                                                    <rect key="frame" x="8" y="8" width="218" height="142"/>
                                                 </imageView>
                                             </subviews>
                                         </view>
-                                        <color key="backgroundColor" red="1" green="0.5110884604" blue="0.57056661409999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="cad-bL-K8S" firstAttribute="leading" secondItem="H1G-yl-6uK" secondAttribute="leading" id="6YL-qV-O4x"/>
-                                            <constraint firstAttribute="trailing" secondItem="cad-bL-K8S" secondAttribute="trailing" id="D5k-LW-Vid"/>
-                                            <constraint firstAttribute="bottom" secondItem="cad-bL-K8S" secondAttribute="bottom" id="Me1-KR-Agu"/>
-                                            <constraint firstItem="cad-bL-K8S" firstAttribute="top" secondItem="H1G-yl-6uK" secondAttribute="top" id="dnf-cf-tUE"/>
+                                            <constraint firstAttribute="bottomMargin" secondItem="cad-bL-K8S" secondAttribute="bottom" id="5ah-z1-epd"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="cad-bL-K8S" secondAttribute="trailing" id="MeP-z9-bhH"/>
+                                            <constraint firstItem="cad-bL-K8S" firstAttribute="top" secondItem="H1G-yl-6uK" secondAttribute="topMargin" id="aC3-Sz-klK"/>
+                                            <constraint firstItem="cad-bL-K8S" firstAttribute="leading" secondItem="H1G-yl-6uK" secondAttribute="leadingMargin" id="sLk-di-8es"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="imageView" destination="cad-bL-K8S" id="87y-bN-amc"/>
@@ -67,7 +67,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
-                                    <color key="backgroundColor" red="1" green="0.5110884604" blue="0.57056661409999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="J23-s0-e7w" firstAttribute="centerY" secondItem="HOz-85-Qi7" secondAttribute="centerY" id="Ott-lD-AWv"/>
                                         <constraint firstItem="J23-s0-e7w" firstAttribute="centerX" secondItem="HOz-85-Qi7" secondAttribute="centerX" id="gcV-14-Gdd"/>
@@ -104,7 +104,7 @@
                         <outlet property="collectionView" destination="ced-5t-p2w" id="lDk-fa-6H6"/>
                         <outlet property="searchBar" destination="fa6-Tc-Oua" id="sXL-DS-f6r"/>
                         <outlet property="shareButton" destination="FMD-KJ-rjd" id="Asv-BV-asG"/>
-                        <segue destination="NED-AT-Owi" kind="presentation" identifier="Show Flickr Photo" customClass="SwipeSegue" customModule="FlickrSearch" customModuleProvider="target" id="ByR-df-VdZ"/>
+                        <segue destination="NED-AT-Owi" kind="presentation" identifier="Show Flickr Photo" customClass="SwipeSegue" customModule="FlickrSearch" customModuleProvider="target" modalPresentationStyle="formSheet" id="ByR-df-VdZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -125,11 +125,11 @@
                         <viewControllerLayoutGuide type="bottom" id="pSG-FT-ffu"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yqL-17-KqI">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="540" height="620"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WUM-cR-Hld">
-                                <rect key="frame" x="20" y="190" width="728" height="664"/>
+                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WUM-cR-Hld">
+                                <rect key="frame" x="20" y="70" width="500" height="480"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="cwq-Vt-JPi" appends="YES" id="v9q-ze-bVd"/>
@@ -138,10 +138,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="pSG-FT-ffu" firstAttribute="top" secondItem="WUM-cR-Hld" secondAttribute="bottom" constant="170" id="8aK-el-EaJ"/>
+                            <constraint firstItem="pSG-FT-ffu" firstAttribute="top" secondItem="WUM-cR-Hld" secondAttribute="bottom" constant="70" id="8aK-el-EaJ"/>
                             <constraint firstItem="WUM-cR-Hld" firstAttribute="leading" secondItem="yqL-17-KqI" secondAttribute="leadingMargin" id="QJ7-rP-d7m"/>
                             <constraint firstItem="WUM-cR-Hld" firstAttribute="trailing" secondItem="yqL-17-KqI" secondAttribute="trailingMargin" id="Siz-ee-nI9"/>
-                            <constraint firstItem="WUM-cR-Hld" firstAttribute="top" secondItem="ibY-MJ-8p8" secondAttribute="bottom" constant="170" id="m78-WS-Hzh"/>
+                            <constraint firstItem="WUM-cR-Hld" firstAttribute="top" secondItem="ibY-MJ-8p8" secondAttribute="bottom" constant="70" id="m78-WS-Hzh"/>
                         </constraints>
                     </view>
                     <connections>
