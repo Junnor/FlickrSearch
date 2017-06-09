@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="eKH-dq-0M5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="eKH-dq-0M5">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +23,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ced-5t-p2w">
-                                <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                                <rect key="frame" x="0.0" y="114" width="768" height="910"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewLayout key="collectionViewLayout" id="l7I-Sc-xPj" customClass="PinterestLayout" customModule="FlickrSearch" customModuleProvider="target"/>
                                 <cells>
@@ -57,12 +57,32 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="u15-Vb-7iE"/>
                                 </connections>
                             </collectionView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="zeQ-k0-Gzv">
+                                <rect key="frame" x="20" y="64" width="728" height="50"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="cxd-HP-yHA">
+                                        <rect key="frame" x="0.0" y="0.0" width="728" height="51"/>
+                                        <segments>
+                                            <segment title="3"/>
+                                            <segment title="4"/>
+                                            <segment title="5"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="changeColumn:" destination="BYZ-38-t0r" eventType="valueChanged" id="qfJ-rl-xbs"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="ced-5t-p2w" firstAttribute="top" secondItem="zeQ-k0-Gzv" secondAttribute="bottom" id="6FP-GI-VZc"/>
                             <constraint firstAttribute="trailing" secondItem="ced-5t-p2w" secondAttribute="trailing" id="7Vx-bb-5qC"/>
                             <constraint firstItem="ced-5t-p2w" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Hn4-YF-Jq2"/>
-                            <constraint firstItem="ced-5t-p2w" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="RUT-BC-VLy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zeQ-k0-Gzv" secondAttribute="trailing" id="IkN-Ln-9JT"/>
+                            <constraint firstItem="ced-5t-p2w" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="RUT-BC-VLy"/>
+                            <constraint firstItem="zeQ-k0-Gzv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="tjl-43-79X"/>
+                            <constraint firstItem="zeQ-k0-Gzv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="vgy-Fs-pHF"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ced-5t-p2w" secondAttribute="bottom" id="wWS-cb-a2Y"/>
                         </constraints>
                     </view>

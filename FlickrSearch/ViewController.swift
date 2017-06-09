@@ -35,6 +35,8 @@ class ViewController: UIViewController, UISearchBarDelegate {
     
     fileprivate var photosImg = [[UIImage]]()
     
+
+    private var pinterestLayout: PinterestLayout!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +49,8 @@ class ViewController: UIViewController, UISearchBarDelegate {
         
         // Layout
         if let layout = collectionView?.collectionViewLayout as? PinterestLayout {
-            layout.delegate = self
+            pinterestLayout = layout
+            pinterestLayout.delegate = self
         }
         collectionView!.contentInset = UIEdgeInsets(top: 23, left: 5, bottom: 10, right: 5)
         
@@ -65,6 +68,22 @@ class ViewController: UIViewController, UISearchBarDelegate {
             let dsvc = segue.destination as! FlickrPhotoViewController
             dsvc.flickrPhoto = flickrPhoto(at: indexPath)
         }
+    }
+    
+    private var column = 3
+    @IBAction func changeColumn(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0: column = 3
+        case 1: column = 4
+        case 2: column = 5
+        default: break
+        }
+        
+        UIView.animate(withDuration: 1.0, animations: { 
+            self.pinterestLayout.numberOfColumns = self.column
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion: nil)
+        
     }
     
     @IBAction func unwindToViewController(segue: UIStoryboardSegue) {
