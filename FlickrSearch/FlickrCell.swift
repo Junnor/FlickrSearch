@@ -28,18 +28,24 @@ class FlickrCell: UICollectionViewCell {
         }
     }
     
+    
     private func configureFlickCell() {
         imageView.image = flickrPhoto.thumbnail
-        
-        let url = flickrPhoto.photoUrl
-        DispatchQueue.global().async {
-            let data = try? Data(contentsOf: url)
-            if let data = data {
-                DispatchQueue.main.async {
-                    self.imageView.image = UIImage(data: data)
-                }
-            }
-        }
+
+//        if let url = flickrPhoto.bigPhotoUrl {
+//            DispatchQueue.global().async {
+//                
+//                let tmpUrl = url
+//                let data = try? Data(contentsOf: tmpUrl)
+//                if let data = data, let image = UIImage(data: data) {
+//                    DispatchQueue.main.async {
+//                        if url == tmpUrl {
+//                            self.imageView.image = image
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
     
 //    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {

@@ -24,4 +24,8 @@ struct FlickrPhoto {
         return URL(string: "https://farm\(farm).staticflickr.com/\(server)/\(photoId)_\(secret)_m.jpg")!
     }
     
+    var bigPhotoUrl: URL! {
+        return URL(string: "https://farm\(farm).staticflickr.com/\(server)/\(photoId)_\(secret)_b.jpg")
+    }
+    
 }

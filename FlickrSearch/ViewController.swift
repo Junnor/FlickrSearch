@@ -139,6 +139,8 @@ class ViewController: UIViewController, UISearchBarDelegate {
                             }
                         }
                         self?.photosImg.append(imgs)
+                        
+//                        self?.fetchHightQuantityImage()
                     }
                     
                     DispatchQueue.main.async {
@@ -181,20 +183,15 @@ extension ViewController: MFMessageComposeViewControllerDelegate {
 extension ViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        print("numberOfSections")
-
         return searchResults.keys.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("numberOfItemsInSection")
-
         let key = searchTags[section]
         return searchResults[key]?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        print("cellForItemAt")
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FlickrCell", for: indexPath)
         if let cell = cell as? FlickrCell {
@@ -205,7 +202,6 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        print("viewForSupplementaryElementOfKind")
         if kind == UICollectionElementKindSectionHeader {
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FlickrHeader", for: indexPath)
             if let header = header as? FlickrPhotoHeaderView {
