@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		673D836C1EEA5235006B7B80 /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 673D836B1EEA5235006B7B80 /* PinterestLayout.swift */; };
 		8BA4033C1EE6DB09004E749C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4033B1EE6DB09004E749C /* AppDelegate.swift */; };
 		8BA4033E1EE6DB09004E749C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA4033D1EE6DB09004E749C /* ViewController.swift */; };
 		8BA403411EE6DB09004E749C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BA4033F1EE6DB09004E749C /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		673D836B1EEA5235006B7B80 /* PinterestLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		8BA403381EE6DB08004E749C /* FlickrSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlickrSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BA4033B1EE6DB09004E749C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8BA4033D1EE6DB09004E749C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				8BAF26CD1EE6F063005E8657 /* FlickrPhoto.swift */,
 				8BAF26CB1EE6F043005E8657 /* FlickrProvider.swift */,
 				8BB6CA3C1EE83340009D1D1D /* SwipeSegue.swift */,
+				673D836B1EEA5235006B7B80 /* PinterestLayout.swift */,
 				8BA4033F1EE6DB09004E749C /* Main.storyboard */,
 				8BA403421EE6DB09004E749C /* Assets.xcassets */,
 				8BA403441EE6DB09004E749C /* LaunchScreen.storyboard */,
@@ -173,6 +176,7 @@
 				8BAF26CC1EE6F043005E8657 /* FlickrProvider.swift in Sources */,
 				8BB6CA3D1EE83340009D1D1D /* SwipeSegue.swift in Sources */,
 				8BA4033C1EE6DB09004E749C /* AppDelegate.swift in Sources */,
+				673D836C1EEA5235006B7B80 /* PinterestLayout.swift in Sources */,
 				8BAF26D01EE6F9C1005E8657 /* FlickrCell.swift in Sources */,
 				8BAF26D21EE6FF84005E8657 /* FlickrPhotoHeaderView.swift in Sources */,
 			);

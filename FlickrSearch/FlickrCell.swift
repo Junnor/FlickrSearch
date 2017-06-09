@@ -29,6 +29,8 @@ class FlickrCell: UICollectionViewCell {
     }
     
     private func configureFlickCell() {
+        imageView.image = flickrPhoto.thumbnail
+        
         let url = flickrPhoto.photoUrl
         DispatchQueue.global().async {
             let data = try? Data(contentsOf: url)
@@ -40,4 +42,10 @@ class FlickrCell: UICollectionViewCell {
         }
     }
     
+//    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+//        super.apply(layoutAttributes)
+//        if let attributes = layoutAttributes as? PinterestLayoutAttributes {
+//            imageViewHeightLayoutConstraint.constant = attributes.photoHeight
+//        }
+//    }
 }

@@ -10,6 +10,7 @@
 
 import UIKit
 import MessageUI
+import AVFoundation
 
 class ViewController: UIViewController, UISearchBarDelegate {
     
@@ -32,14 +33,30 @@ class ViewController: UIViewController, UISearchBarDelegate {
     fileprivate var searchResults = [String: [FlickrPhoto]]()
     fileprivate var searchTags = [String]()
     
+    fileprivate var photosImg = [[UIImage]]()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         indicator.center = view.center
         indicator.hidesWhenStopped = true
+        indicator.color = UIColor.red
         indicator.stopAnimating()
         view.addSubview(indicator)
+        
+        // Layout
+        if let layout = collectionView?.collectionViewLayout as? PinterestLayout {
+            layout.delegate = self
+        }
+        collectionView!.contentInset = UIEdgeInsets(top: 23, left: 5, bottom: 10, right: 5)
+        
+        print("viewDidLoad")
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        indicator.center = view.center
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -105,9 +122,23 @@ class ViewController: UIViewController, UISearchBarDelegate {
                 self?.indicator.stopAnimating()
                 if photos != nil && photos?.count != 0 {
                     if !(self?.searchTags.contains(searchBar.text!))! {
-                        print("Found \(photos!.count) photos match \(searchBar.text!)")
+
+                        // 1
+                        self?.searchTags.removeAll()
+                        self?.searchResults.removeAll()
+                        self?.photosImg.removeAll()
+                        
+                        //2
                         self?.searchTags.append(searchBar.text!)
                         self?.searchResults[searchBar.text!] = photos!
+                        
+                        var imgs = [UIImage]()
+                        if !(photos?.isEmpty)! {
+                            for img in photos! {
+                                imgs.append(img.thumbnail)
+                            }
+                        }
+                        self?.photosImg.append(imgs)
                     }
                     
                     DispatchQueue.main.async {
@@ -141,7 +172,7 @@ extension ViewController: MFMessageComposeViewControllerDelegate {
         case .cancelled:
             print("canced")
         case .failed:
-            print("fai;ed")
+            print("failed")
         }
         controller.dismiss(animated: true, completion: nil)
     }
@@ -150,15 +181,21 @@ extension ViewController: MFMessageComposeViewControllerDelegate {
 extension ViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        print("numberOfSections")
+
         return searchResults.keys.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print("numberOfItemsInSection")
+
         let key = searchTags[section]
-        return searchResults[key]!.count
+        return searchResults[key]?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        print("cellForItemAt")
+
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FlickrCell", for: indexPath)
         if let cell = cell as? FlickrCell {
             let photo = flickrPhoto(at: indexPath)
@@ -168,8 +205,8 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        print("viewForSupplementaryElementOfKind")
         if kind == UICollectionElementKindSectionHeader {
-            // TODO: xxx
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "FlickrHeader", for: indexPath)
             if let header = header as? FlickrPhotoHeaderView {
                 let searchStr = searchTags[indexPath.section]
@@ -190,9 +227,7 @@ extension Array where Element: AnyObject {
     }
 }
 
-extension ViewController: UICollectionViewDelegateFlowLayout {
-    
-    
+extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if sharing {
@@ -207,6 +242,9 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         selectedPhotos.removeValue(forKey: indexPath)
     }
+}
+
+extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 70)
@@ -222,6 +260,22 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 50, left: 20, bottom: 50, right: 20)
+    }
+}
+
+extension ViewController: PinterestLayoutDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAt indexPath: IndexPath, width: CGFloat) -> CGFloat {
+        
+        let photo = photosImg[indexPath.section][indexPath.row]
+        let boundingRect = CGRect(x: 0.0, y: 0.0, width: width, height: CGFloat(MAXFLOAT))
+        let rect = AVMakeRect(aspectRatio: photo.size, insideRect: boundingRect)
+        return rect.size.height
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, heightForAnnotationAt indexPath: IndexPath, width: CGFloat) -> CGFloat {
+        
+        return 0
     }
 }
 
